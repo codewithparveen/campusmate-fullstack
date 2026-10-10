@@ -1,0 +1,40 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CampusMate</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header><nav><b class="logo">Campus<span>Mate</span></b>
+<div class="nav-r"><a href="#services">Services</a><a href="#dashboard">Live activity</a><a href="#how">How it works</a><span id="navAuth"></span></div></nav></header>
+<main>
+<section class="hero"><div><small>SMART CAMPUS MANAGEMENT</small><h1>One Smart Platform<br>for a Better Campus.</h1>
+<p>CampusMate brings maintenance, cleanliness and hostel parcel management together — for classrooms, hostels and every corner of campus.</p>
+<a class="btn" href="student.html#report">Report an Issue</a> <a class="btn ghost" href="#services">Explore services</a></div>
+<aside><b>Campus Overview <small style="color:#23804a">● live</small></b>
+<div class="stats"><span><strong id="sMaint">–</strong>Maintenance</span><span><strong id="sClean">–</strong>Cleanliness</span><span><strong id="sParcel">–</strong>Parcels waiting</span></div>
+<div class="ai"><b>🤖 AI Priority Insight</b><p id="insight">Loading…</p></div></aside></section>
+
+<section id="services"><small>CORE SERVICES</small><h2>Everything students need in one place.</h2>
+<div class="cards">
+<article><i>🔧</i><h3>FIXORA</h3><p>Report broken lights, fans, AC, plumbing, water leakage and other maintenance issues in classrooms, labs and hostels.</p><a class="btn ghost" href="student.html#report">Report Maintenance</a></article>
+<article><i>🧹</i><h3>CLEANWISE</h3><p>Report garbage, dirty washrooms, overflowing bins and recurring cleanliness problems anywhere on campus.</p><a class="btn ghost" href="student.html#report">Report Cleanliness</a></article>
+<article><i>📦</i><h3>HOSTELHUB</h3><p>Get notified when a parcel arrives and collect it safely with a one-time OTP at the hostel desk.</p><a class="btn ghost" href="student.html#parcels">Open Parcel Hub</a></article></div></section>
+
+<section id="dashboard"><small>LIVE ACTIVITY</small><h2>Recent campus activity</h2>
+<div class="table"><input id="search" placeholder="Search issue or location">
+<table><tr><th>Issue</th><th>Location</th><th>Reports</th><th>Priority</th><th>Status</th></tr><tbody id="rows"><tr><td colspan="5">Loading…</td></tr></tbody></table></div></section>
+
+<section class="how" id="how"><small>HOW IT WORKS</small><h2>Report. Analyse. Track.</h2>
+<div class="steps"><div><b>01</b><h3>Report</h3><p>Submit issue details, location and an optional photo.</p></div><div><b>02</b><h3>Analyse</h3><p>The AI engine finds the category, sets a priority and links repeated reports of the same problem.</p></div><div><b>03</b><h3>Track</h3><p>Get live notifications until the issue is resolved.</p></div></div></section>
+</main>
+<footer>CampusMate — One Smart Platform for a Better Campus.</footer>
+<script src="app.js"></script>
+<script>
+const u = Session.user;
+$('navAuth').innerHTML = u ? `<a class="btn" href="${u.role === 'admin' ? 'admin.html' : 'student.html'}">My Dashboard</a>` : `<a class="btn ghost" href="auth.html">Login</a> <a class="btn" href="auth.html#register">Register</a>`;
+(async () => {
+  try {
+    const d = await api('/dashboard/public');
+    $('sMaint').textContent = d.maintenance; $('sClean').textContent = d.cleanliness; $('sParcel').textContent = d.pendingParcels;
+    $('insight').textContent = d.insight;
+    $('rows').innerHTML = d.recent.length ? d.recent.map(r => `<tr><td>${esc(r.category)}</td><td>${esc(r.location)}</td><td>${r.reports}</td><td>${pill(r.priority, 'p')}</td><td>${pill(r.status, 's')}</td></tr>`).join('') : '<tr><td colspan="5">No reports yet.</td></tr>';
+  } catch (e) { $('insight').textContent = e.message; $('rows').innerHTML = `<tr><td colspan="5">${esc(e.message)}</td></tr>`; }
+})();
+$('search').oninput = () => { const q = $('search').value.toLowerCase(); document.querySelectorAll('#rows tr').forEach(r => r.style.display = r.innerText.toLowerCase().includes(q) ? '' : 'none'); };
+</script></body></html>

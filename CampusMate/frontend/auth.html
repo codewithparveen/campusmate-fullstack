@@ -1,0 +1,29 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Login · CampusMate</title><link rel="stylesheet" href="style.css"></head>
+<body><header><nav><b class="logo"><a href="index.html" style="color:inherit;text-decoration:none;margin:0">Campus<span>Mate</span></a></b></nav></header>
+<div class="authbox card">
+<div class="tabs" style="margin-top:0"><button data-tab="login">Login</button><button data-tab="register">Register</button></div>
+<div class="pane" id="pane-login"><form class="f" id="loginForm">
+<label>Email<input type="email" id="lEmail" required autocomplete="username"></label>
+<label>Password<input type="password" id="lPass" required autocomplete="current-password"></label>
+<button type="submit" style="width:100%">Login</button></form></div>
+<div class="pane" id="pane-register"><form class="f" id="regForm">
+<label>Full name<input id="rName" required></label>
+<label>Email<input type="email" id="rEmail" required autocomplete="username"></label>
+<div class="row"><label>Roll / Register no.<input id="rRoll"></label><label>Department<input id="rDept" placeholder="CSE"></label></div>
+<div class="row"><label>Year<select id="rYear"><option>1</option><option>2</option><option>3</option><option>4</option></select></label><label>Phone<input id="rPhone" inputmode="tel"></label></div>
+<div class="row"><label>Hostel block<input id="rBlock" placeholder="Block B"></label><label>Room no.<input id="rRoom"></label></div>
+<label>Password (min 6 characters)<input type="password" id="rPass" minlength="6" required autocomplete="new-password"></label>
+<button type="submit" style="width:100%">Create student account</button></form></div>
+<p class="msg err" id="msg"></p></div>
+<script src="app.js"></script>
+<script>
+if (Session.token && Session.user) location.href = Session.user.role === 'admin' ? 'admin.html' : 'student.html';
+initTabs();
+function done(d) { Session.set(d.token, d.user); location.href = d.user.role === 'admin' ? 'admin.html' : 'student.html'; }
+$('loginForm').onsubmit = async e => { e.preventDefault(); $('msg').textContent = '';
+  try { done(await api('/auth/login', { method: 'POST', body: { email: $('lEmail').value, password: $('lPass').value } })); } catch (err) { $('msg').textContent = err.message; } };
+$('regForm').onsubmit = async e => { e.preventDefault(); $('msg').textContent = '';
+  try { done(await api('/auth/register', { method: 'POST', body: { name: $('rName').value, email: $('rEmail').value, password: $('rPass').value,
+    studentId: $('rRoll').value, department: $('rDept').value, year: $('rYear').value, phone: $('rPhone').value, hostelBlock: $('rBlock').value, roomNo: $('rRoom').value } })); }
+  catch (err) { $('msg').textContent = err.message; } };
+</script></body></html>

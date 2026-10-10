@@ -1,0 +1,41 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin · CampusMate</title><link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script></head>
+<body><header></header>
+<div class="wrap">
+<h1>Admin dashboard</h1><p class="muted">Everything below is calculated live from the database.</p>
+<div class="tabs"><button data-tab="analytics">Analytics</button><button data-tab="complaints">Complaints</button><button data-tab="parcels">Parcels (HOSTELHUB)</button></div>
+
+<div class="pane" id="pane-analytics">
+ <div class="tiles" id="tiles"></div>
+ <div class="grid2"><div class="card"><h3>Complaints by status</h3><div style="height:260px"><canvas id="cStatus"></canvas></div></div><div class="card"><h3>Last 7 days</h3><div style="height:260px"><canvas id="cTrend"></canvas></div></div></div>
+ <div class="grid2"><div class="card"><h3>By place (classroom, hostel…)</h3><div style="height:260px"><canvas id="cArea"></canvas></div></div><div class="card"><h3>By category</h3><div style="height:260px"><canvas id="cCat"></canvas></div></div></div>
+ <div class="grid2"><div class="card"><h3>🔥 Hotspots (most open issues)</h3><ul class="hl" id="hot"></ul></div><div class="card"><h3>🔁 Repeated problems</h3><ul class="hl" id="rep"></ul></div></div>
+</div>
+
+<div class="pane" id="pane-complaints"><div class="card">
+ <div class="bar"><input id="q" placeholder="Search description / location"><select id="fStatus"><option value="">All status</option><option>Reported</option><option>Under Review</option><option>Assigned</option><option>In Progress</option><option>Resolved</option></select>
+ <select id="fPriority"><option value="">All priority</option><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select>
+ <select id="fModule"><option value="">Both services</option><option value="FIXORA">FIXORA</option><option value="CLEANWISE">CLEANWISE</option></select>
+ <select id="fArea"><option value="">All places</option><option>Classroom</option><option>Hostel</option><option>Library</option><option>Canteen</option><option>Washroom</option><option>Lab</option><option>Ground</option><option>Other</option></select></div>
+ <div class="tbl"><table><thead><tr><th>Issue</th><th>Place</th><th>Reporter</th><th>Priority</th><th>Status</th><th>Reported</th></tr></thead><tbody id="rows"></tbody></table></div></div></div>
+
+<div class="pane" id="pane-parcels">
+ <div class="card" style="max-width:680px"><h3>Register an incoming parcel</h3>
+ <form class="f" id="parcelForm">
+  <label>Student (roll number or email)<input id="pStudent" list="studentList" required autocomplete="off" placeholder="Start typing a name / roll no."></label><datalist id="studentList"></datalist>
+  <div class="row"><label>Parcel description<input id="pName" required placeholder="Amazon box"></label><label>Courier<input id="pCourier" required placeholder="Delhivery"></label></div>
+  <label>Tracking number (optional)<input id="pTrack"></label>
+  <button type="submit">Register parcel &amp; notify student</button></form><p class="msg" id="pMsg"></p></div>
+ <div class="card"><h3>All parcels</h3><div class="bar"><input id="pq" placeholder="Search student, parcel, courier"><select id="pStatus"><option value="">All</option><option>Ready for Pickup</option><option>Collected</option></select></div>
+ <div class="tbl"><table><thead><tr><th>Parcel</th><th>Student</th><th>Status</th><th>Hand over (enter student's OTP)</th></tr></thead><tbody id="pRows"></tbody></table></div></div>
+</div>
+</div>
+
+<div class="overlay" id="detail"><div class="box"><button class="x" onclick="$('detail').classList.remove('on')">×</button><div id="detailBody"></div>
+ <hr style="border:0;border-top:1px solid #e1eaf4;margin:18px 0"><form class="f" id="updForm"><b>Update this complaint</b>
+ <div class="row"><label>Status<select id="uStatus"><option>Reported</option><option>Under Review</option><option>Assigned</option><option>In Progress</option><option>Resolved</option></select></label>
+ <label>Priority<select id="uPriority"><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select></label></div>
+ <label>Assigned to (staff / team)<input id="uAssigned" placeholder="Electrician team"></label>
+ <label>Note for the student<input id="uNote" maxlength="200" placeholder="Technician will visit tomorrow"></label>
+ <button type="submit">Save update</button> <button type="button" class="danger" id="delBtn">Delete</button></form></div></div>
+<script src="app.js"></script><script src="admin.js"></script></body></html>
