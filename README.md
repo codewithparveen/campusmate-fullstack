@@ -4,9 +4,9 @@
 
 | | |
 |---|---|
-| **Live website** | `PASTE YOUR RENDER LINK HERE` |
-| **Source code** | `PASTE YOUR GITHUB REPOSITORY LINK HERE` |
-| **Submitted by** | `Your Name` · `Register No.` · `Department / Year` · `College Name` |
+| **Live website** | https://campusmate-fullstack-1.onrender.com/ |
+| **Source code** | https://github.com/codewithparveen/campusmate-fullstack |
+| **Submitted by** | Parveen Fathima T N · 25106037 · CSE(RL) / 2nd year· Rathinam Technical Campus |
 
 **Demo logins (for evaluators)**
 
@@ -14,7 +14,7 @@
 |---|---|---|
 | Admin | `PASTE ADMIN EMAIL` | `PASTE ADMIN PASSWORD` |
 | Student | `priya@student.edu` | `Student@123` |
-
+> As the above is for educational purpose, if you are new to this website please go to the register section and register your account and file your complaints.
 > A new student account can also be created from the **Register** tab.
 > The live site is on free hosting: if it has been idle, the **first page load can take up to a minute** to wake up. Please wait and refresh once.
 
